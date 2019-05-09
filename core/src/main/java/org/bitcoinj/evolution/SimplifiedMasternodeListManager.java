@@ -119,6 +119,9 @@ public class SimplifiedMasternodeListManager extends AbstractManager {
                 if(block.getHeight() != newHeight)
                     throw new ProtocolException("mnlistdiff blockhash (height="+block.getHeight()+" doesn't match coinbase blockheight: " + newHeight);
             }
+            if(mnList.getHeight() != tipHeight || !mnList.getBlockHash().equals(tipBlockHash))
+                maybeGetMNListDiffFresh();
+
             SimplifiedMasternodeList newMNList = mnList.applyDiff(mnlistdiff);
             newMNList.verify(mnlistdiff.coinBaseTx);
             SimplifiedQuorumList newQuorumList = null;
@@ -157,7 +160,7 @@ public class SimplifiedMasternodeListManager extends AbstractManager {
         @Override
         public void notifyNewBestBlock(StoredBlock block) throws VerificationException {
             if(isDeterministicMNsSporkActive()) {
-                if (Utils.currentTimeSeconds() - block.getHeader().getTimeSeconds() < 60 * 60 * 25)
+                if (Utils.currentTimeSeconds() - block.getHeader().getTimeSeconds() < SNAPSHOT_TIME_PERIOD)
                     requestMNListDiff(block);
             }
         }
@@ -209,8 +212,9 @@ public class SimplifiedMasternodeListManager extends AbstractManager {
         if(lastRequestTime + WAIT_GETMNLISTDIFF > Utils.currentTimeMillis())
             return;
 
+        //Should we reset our masternode/quorum list
         if(mnList.size() == 0 || tipBlockHash.equals(Sha256Hash.ZERO_HASH) ||
-                tipHeight < blockChain.getChainHead().getHeight() - 3000) {
+                mnList.getHeight() != tipHeight) {
             mnList = new SimplifiedMasternodeList(params);
             tipHeight = -1;
             tipBlockHash = Sha256Hash.ZERO_HASH;
@@ -302,7 +306,9 @@ public class SimplifiedMasternodeListManager extends AbstractManager {
         if(!waitingForMNListDiff)
             requestNextMNListDiff();
 
-
+        if(lastRequestTime + WAIT_GETMNLISTDIFF * 4 < Utils.currentTimeMillis()) {
+            maybeGetMNListDiffFresh();
+        }
 
         /*lock.lock();
         try {
