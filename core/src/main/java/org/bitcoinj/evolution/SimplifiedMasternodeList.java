@@ -464,4 +464,12 @@ public class SimplifiedMasternodeList extends Message {
             //lock.unlock();
         }
     }
+
+    public long getHeight() {
+        return height;
+    }
+
+    public Sha256Hash getBlockHash() {
+        return blockHash;
+    }
 }
