@@ -640,11 +640,11 @@ public abstract class NetworkParameters {
     public abstract int getProtocolVersionNum(final ProtocolVersion version);
 
     public static enum ProtocolVersion {
-        MINIMUM(70213),
+        MINIMUM(70215),
         PONG(60001),
         BLOOM_FILTER(MINIMUM.getBitcoinProtocolVersion()),
-        DMN_LIST(70213),
-        CURRENT(70213);
+        DMN_LIST(70215),
+        CURRENT(70215);
 
         private final int bitcoinProtocol;
 
