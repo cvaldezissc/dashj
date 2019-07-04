@@ -71,9 +71,9 @@ public class CoinDefinition {
     public static final long MAX_COINS = 22000000;                 //main.h:  MAX_MONEY
 
 
-    public static final long DEFAULT_MIN_TX_FEE = 10000;   // MIN_TX_FEE
+    public static final long DEFAULT_MIN_TX_FEE = 5000000000L;   // MIN_TX_FEE
     public static final long DUST_LIMIT = 5460; //Transaction.h CTransaction::GetDustThreshold for 10000 MIN_TX_FEE
-    public static final long INSTANTX_FEE = 100000; //0.001 DASH (updated for 12.1)
+    public static final long INSTANTX_FEE = 10000000000L; //100.00 $PAC per Kb (updated for 120601)
     public static final boolean feeCanBeRaised = false;
 
     //
@@ -180,7 +180,7 @@ public class CoinDefinition {
     }
 
     //Unit Test Information
-    public static final String UNITTEST_ADDRESS = "XgxQxd6B8iYgEEryemnJrpvoWZ3149MCkK";
-    public static final String UNITTEST_ADDRESS_PRIVATE_KEY = "XDtvHyDHk4S3WJvwjxSANCpZiLLkKzoDnjrcRhca2iLQRtGEz1JZ";
+    public static final String UNITTEST_ADDRESS = "PWB1QPjM8X8DsJf3PgTXJvzqqvumXiJixS";
+    public static final String UNITTEST_ADDRESS_PRIVATE_KEY = "XJELBZLppbGtuwxDJDA9HEcwsHhGcStPKfnRzuc85wdDWpamnhDB";
 
 }
